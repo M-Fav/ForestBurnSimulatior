@@ -1,0 +1,9 @@
+{
+  "gridHeight": 100,
+
+  "gridWidth": 60,
+
+  "initialFireCells": [[15, 8], [12, 48], [25, 36]],
+
+  "fireSpreadProbability": 0.23
+}

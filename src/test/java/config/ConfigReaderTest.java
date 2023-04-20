@@ -14,7 +14,7 @@ public class ConfigReaderTest {
         ConfigData config = ConfigReader.readConfig("C:\\WORK-SRC\\ForestBurnSimulator\\src\\test\\ressources\\configTest.json");
         assertEquals(100, config.getGridHeight());
         assertEquals(20, config.getGridWidth());
-        assertEquals(0.5, config.getFireSpreadProbability());
+        assertEquals(0, config.getFireSpreadProbability());
         int[][] expected = {{0, 0}, {1, 1}, {2, 2}};
         assertArrayEquals(expected, config.getInitialFireCells());
     }

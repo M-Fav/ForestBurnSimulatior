@@ -5,5 +5,5 @@
 
   "initialFireCells": [[0, 0], [1, 1], [2, 2]],
 
-  "fireSpreadProbability": 0.5
+  "fireSpreadProbability": 0
 }

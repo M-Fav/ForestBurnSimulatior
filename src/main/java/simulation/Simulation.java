@@ -3,6 +3,8 @@ package simulation;
 import config.ConfigData;
 import lombok.Data;
 
+import java.util.Random;
+
 @Data
 public class Simulation {
     //attributs de la simulation
@@ -11,6 +13,7 @@ public class Simulation {
     private int width;
     private int steps;
     private double propagationProbability;
+    private Random random;
 
     public Simulation(ConfigData config) {
         // récupération des paramètres depuis l'objet ConfigData
@@ -18,6 +21,7 @@ public class Simulation {
         this.width = config.getGridWidth();
         this.steps = 0;
         this.propagationProbability = config.getFireSpreadProbability();
+        this.random = new Random();
 
         // initialisation de la grille
         this.grid = new int[height][width];
@@ -34,40 +38,50 @@ public class Simulation {
     }
 
     public void run() {
-        boolean fireSpread = true;
-        while (fireSpread) {
+        boolean fireSpread;   //variable boolene de prop de feu
+        do {
             fireSpread = false;
-            int[][] newGrid = new int[height][width];
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     if (grid[i][j] == 1) {
-                        newGrid[i][j] = 2; // la cellule en feu devient une cellule brûlée
+                        int row = i;
+                        int col = j;
+                        grid[i][j] = 2; // la cellule en feu devient une cellule brûlée
                         if (i > 0 && grid[i - 1][j] == 0 && Math.random() < propagationProbability) {
-                            newGrid[i - 1][j] = 1; // la cellule au nord prend feu
+                            grid[i - 1][j] = 1; // la cellule au nord prend feu
                             fireSpread = true;
-                        }
-                        if (j > 0 && grid[i][j - 1] == 0 && Math.random() < propagationProbability) {
-                            newGrid[i][j - 1] = 1; // la cellule à l'ouest prend feu
-                            fireSpread = true;
+                            row = i-1;
+                            col = j;
+                            System.out.println("la cellule [" + row + "] [" + col + "] prend feu");
                         }
                         if (i < height - 1 && grid[i + 1][j] == 0 && Math.random() < propagationProbability) {
-                            newGrid[i + 1][j] = 1; // la cellule au sud prend feu
+                            grid[i + 1][j] = 1; // la cellule au sud prend feu
                             fireSpread = true;
+                            row = i+1;
+                            col = j;
+                            System.out.println("la cellule [" + row + "] [" + col + "] prend feu");
+                        }
+                        if (j > 0 && grid[i][j - 1] == 0 && Math.random() < propagationProbability) {
+                            grid[i][j - 1] = 1; // la cellule à l'ouest prend feu
+                            fireSpread = true;
+                            row = i;
+                            col = j-1;
+                            System.out.println("la cellule [" + row + "] [" + col + "] prend feu");
                         }
                         if (j < width - 1 && grid[i][j + 1] == 0 && Math.random() < propagationProbability) {
-                            newGrid[i][j + 1] = 1; // la cellule à l'est prend feu
+                            grid[i][j + 1] = 1; // la cellule à l'est prend feu
                             fireSpread = true;
+                            row = i;
+                            col = j+1;
+                            System.out.println("la cellule [" + row + "] [" + col +"] prend feu");
                         }
-                    } else {
-                        newGrid[i][j] = grid[i][j]; // la cellule reste dans son état précédent
                     }
                 }
             }
-            grid = newGrid; // mise à jour de la grille
             steps++; // incrémentation du nombre d'étapes
-
-        }
+        } while (fireSpread);
     }
+
 
     public int getBurnedCellsCount() {
         int count = 0;

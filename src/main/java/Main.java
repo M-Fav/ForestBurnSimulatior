@@ -3,7 +3,7 @@
 import config.ConfigReader;
 import config.ConfigData;
 import simulation.Simulation;
-
+import simulation.SimulationGUI;
 
 
 import java.io.IOException;
@@ -17,14 +17,12 @@ public class Main {
         // création d'une instance de Simulation en utilisant l'objet ConfigData
         Simulation simulation = new Simulation(config);
 
-        // exécution de la simulation
-        simulation.run();
+        // création d'une instance de SimulationGUI en utilisant l'instance de Simulation et une taille de cellule de 10 pixels
+        SimulationGUI simulationGUI = new SimulationGUI(simulation, 10);
 
-        // affichage des résultats de la simulation
-        int burnedCellsCount = simulation.getBurnedCellsCount();
-        int stepsCount = simulation.getStepsCount();
-        System.out.println("Simulation finished in " + stepsCount + " steps");
-        System.out.println("Number of burned cells: " + burnedCellsCount);
+        // exécution de la simulation dans un thread séparé et affichage des résultats dans une boîte de dialogue
+        simulationGUI.start();
+
     }
 }
 
